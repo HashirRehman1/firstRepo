@@ -1,0 +1,83 @@
+15
+SA 6
+which functionvis use to access the private data member of different class?
+friend function 
+TF 5
+It is not possible to achieve inheritance of structures in c++?(True/False)
+false
+MC 4
+Class function which is called automatically as soon as the object is created is called as? 
+Constructor
+Destructor
+Friend function
+Inline function.
+A
+TF 5
+Sub classes may also be called Child classes/Derived classes.(True/False)
+true
+SA 6
+How many keywords in C++ ?
+95
+MC 4
+If we stored five elements or data items in an array, what will be the index address or the index number of the array's last data item?
+3
+5
+4
+88
+C
+TF 5
+An identifier must start with a letter or an underscore.(true/false)
+True
+SA 6
+In which inheritance a derived class is inherited from the only one base class?
+single inheritance 
+TF 5
+The following is an example of a declaration statement:
+cout << “Enter a number: ”;.(true/false)
+False
+SA 6
+In which linked list the first element points to the last element and the last element points to the first element?
+circular
+MC 4 
+Every variable should be separated by ___ separator.
+Dot
+Colon
+Comma
+Semicolon
+SA 6
+Static variables are essentially?
+global variables
+TF 5
+All data types take up the same amount of storage.(true/false)
+False
+SA 6
+The programming language that has the ability to create new data types is called?
+Extensible
+MC 4
+is the smallest individual unit in a program.
+Variable
+Control
+Character
+Token
+D
+MC 10
+new question is arrived 
+yes
+no
+both
+none
+A
+MC 10
+aaa sss dd 
+qq
+ww
+ee
+rr
+A
+MC 10
+qqqq qqq q qww
+www
+ww
+w
+
+w

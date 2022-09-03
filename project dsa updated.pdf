@@ -1,0 +1,2014 @@
+    THE UNIVERSITY OF LAHORE
+
+Submitted To: Sir Hafiz Ahsan Arshad
+Date of Submission: 20-05-2021
+
+Prepared By: Hashir Rehman(70077721)
+Prepared By: Talha Awan(70077943)
+Prepared By: Bushra Arshad(70078281)
+Prepared By: Ayesha Zia(70078161)
+Prepared By: Fatima(70077925)
+Prepared By: Muhammad Asad(70077616)
+
+          Department of Computer Science
+
+                                                                                                                              1
+Output:
+
+                                                                                                                              2
+Insertion of MCQ:
+                                                                                                                              3
+This question is inserted int the last of the lisrt successfully:
+                                                                                                                              4
+Option 2 and 3 also inserted TF and SA respectively.
+Quiz attempt:
+
+                                                                                                                              5
+Source code:
+
+#include<iostream>
+#include<ctime>
+#include<cstdlib>
+#include<string.h>
+#include<fstream>
+#include<sstream>
+using namespace std;
+class Node
+{
+public:
+
+   int key;
+   int score;
+   Node* next;
+
+   Node()
+   {
+
+      key = 0;
+      score = 0;
+      next = NULL;
+   }
+};
+
+class score_queue
+{
+public:
+
+                                                                                                                              6
+Node* front;
+Node* rear;
+int total;
+
+score_queue()
+{
+
+   total = 0;
+   front = NULL;
+   rear = NULL;
+}
+
+bool isEmpty()
+{
+
+   if ((front == NULL) && (rear == NULL))
+   {
+
+      return true;
+   }
+   else
+   {
+
+      return false;
+   }
+}
+void enqueue(int s, int k)
+{
+   Node* n = new Node;
+   n->score = s;
+
+                                                                                                                           7
+   n->key = k;
+   if (isEmpty())
+   {
+
+      front = n;
+      rear = n;
+   }
+
+   else
+   {
+
+      rear->next = n;
+      rear = n;
+   }
+
+}
+
+Node* dequeue()
+{
+
+   Node* temp = NULL;
+   if (isEmpty())
+   {
+
+      cout << "no marks obtained yet" << endl;
+      return NULL;
+   }
+   else
+   {
+      if (front == rear)
+
+                                                                                                                           8
+      {
+         temp = front;
+         front = NULL;
+         rear = NULL;
+         return temp;
+
+      }
+      else
+      {
+
+         temp = front;
+         front = front->next;
+         return temp;
+      }
+
+   }
+}
+
+int count()
+{
+
+   int count = 0;
+   Node* temp = front;
+   while (temp != NULL)
+   {
+
+      count++;
+      temp = temp->next;
+   }
+   return count;
+
+                                                                                                                           9
+}
+
+void display(char f[50])
+{
+
+   if (isEmpty())
+   {
+
+      cout << "no record found" << endl;
+   }
+   else
+   {
+
+      Node* temp = front;
+      while (temp != NULL)
+      {
+
+         cout << "Q:" << temp->key << " = " << temp->score << endl;
+         total = total + temp->score;
+         ofstream o;
+         o.open(f, ios::app);
+         o << "Q:" << temp->key << " = " << temp->score << endl;
+         o.close();
+         if (temp->next == NULL)
+         {
+
+            cout << "total is: " << total;
+            temp->key = 0;
+            ofstream o;
+            o.open(f, ios::app);
+            o << "total is: " << total;
+
+                                                                                                                          10
+               o.close();
+            }
+            temp = temp->next;
+         }
+         total = 0;
+         front = NULL;
+         rear = NULL;
+         cout << endl;
+      }
+
+   }
+};
+
+class nodeMC
+{
+public:
+
+   int key;
+   char ques[500];
+   char a1[500];
+   char a2[500];
+   char a3[500];
+   char a4[500];
+   char c_ans[20];
+   int scor;
+   nodeMC* next;
+   node()
+
+                                                                                                                             11
+   {
+      key = 0;
+      scor = 0;
+      next = NULL;
+
+   }
+};
+class MC :public score_queue
+{
+public:
+
+   nodeMC* head;
+   nodeMC* tail;
+   int k, attempt_no;
+   char guess[20];
+   MC()
+   {
+
+      attempt_no = 0;
+      k = 0;
+      head = NULL;
+      tail = NULL;
+   }
+   nodeMC* nodeExists(int k)
+   {
+      nodeMC* temp = NULL;
+
+      nodeMC* cur = head;
+      while (cur != NULL)
+
+                                                                                                                             12
+      {
+         if (cur->key == k)
+         {
+            temp = cur;
+         }
+         cur = cur->next;
+
+      }
+      return temp;
+   }
+   void inserthead(char q[500], char a11[500], char a22[500], char a33[500], char a44[500], char c[20],
+int s)
+   {
+      k++;
+      nodeMC* n = new nodeMC;
+      n->key = k;
+      strcpy(n->ques, q);
+      strcpy(n->a1, a11);
+      strcpy(n->a2, a22);
+      strcpy(n->a3, a33);
+      strcpy(n->a4, a44);
+      strcpy(n->c_ans, c);
+      n->scor = s;
+      if (head == NULL && tail == NULL)
+      {
+
+         head = tail = n;
+      }
+      else
+
+                                                                                                                             13
+   {
+      tail->next = n;
+      tail = n;
+
+   }
+   ofstream o;
+   o.open("questions.txt", ios::app);
+   o << "MC" << " " << n->scor << "\n" << n->ques;
+   o << "\n" << n->a1 << "\n" << n->a2 << "\n" << n->a3 << "\n" << n->a4;
+   o << endl << n->c_ans << endl;
+
+}
+void attemptMC(int k)
+{
+
+   nodeMC* cur = nodeExists(k);
+   if (cur != NULL)
+   {
+
+      attempt_no++;
+      cout << "points: " << cur->scor << "\n" << "Question: " << cur->ques << endl;
+      cout << "\nA) " << cur->a1 << "\nB) " << cur->a2 << "\nC) ";
+      cout << cur->a3 << "\nD) " << cur->a4 << endl;
+      cin >> guess;
+      if (strcmp(guess, cur->c_ans) == 0)
+      {
+
+         cout << "Cnorrect! you got 10 points\n";
+         enqueue(cur->scor, attempt_no);
+      }
+
+                                                                                                                          14
+      else if (strcmp(guess, "skip") == 0)
+      {
+
+         enqueue(0, attempt_no);
+      }
+      else
+      {
+
+         cout << "Inorrect, the answer was " << cur->c_ans << " you lose 10 points\n";
+         cur->scor = -10;
+         enqueue(cur->scor, attempt_no);
+      }
+      cout << "\n\n\n";
+      cur = cur->next;
+   }
+   else
+   {
+      cout << "No question exist with this key value : " << k << endl;
+   }
+}
+
+void printMClist()
+{
+
+   if (head == NULL)
+   {
+
+      cout << "No MCQs type question exist in record: ";
+   }
+   else
+
+                                                                                                                          15
+      {
+         nodeMC* cur = head;
+         while (cur != NULL)
+         {
+            cout << "MC" << " " << cur->scor << "\n" << cur->ques;
+            cout << "\n" << cur->a1 << "\n" << cur->a2 << "\n" << cur->a3 << "\n" << cur->a4;
+            cout << endl << cur->c_ans << endl;
+            cur = cur->next;
+         }
+
+      }
+   }
+};
+class nodeTF
+{
+public:
+   int key;
+   char ques[500], c_ans[20], a;
+   int scor;
+   nodeTF* next;
+   node()
+   {
+
+      key = 0;
+      scor = 0;
+      next = NULL;
+   }
+
+                                                                                                                             16
+};
+class TF :public score_queue
+{
+public:
+
+   nodeTF* head;
+   nodeTF* tail;
+   int k, attempt_no;
+   char guess[20], c[20];
+   TF()
+   {
+
+      attempt_no = 0;
+      k = 0;
+      head = NULL;
+      tail = NULL;
+   }
+   nodeTF* nodeExists(int k)
+   {
+      nodeTF* temp = NULL;
+      nodeTF* cur = head;
+      while (cur != NULL)
+      {
+
+         if (cur->key == k)
+         {
+
+            temp = cur;
+         }
+         cur = cur->next;
+
+                                                                                                                             17
+   }
+   return temp;
+}
+void inserthead(char q[500], char c[20], int s)
+{
+   k++;
+   nodeTF* n = new nodeTF;
+   n->key = k;
+   strcpy(n->ques, q);
+   strcpy(n->c_ans, c);
+   n->scor = s;
+   if (head == NULL && tail == NULL)
+   {
+
+      head = tail = n;
+   }
+   else
+   {
+
+      tail->next = n;
+      tail = n;
+   }
+
+   ofstream o;
+   o.open("questions.txt", ios::app);
+   o << "TF" << " " << n->scor << "\nQuestion: " << n->ques << "(true/false)\n";
+   o << n->c_ans << endl;
+
+                                                                                                                          18
+   o.close();
+
+}
+void attemptTF(int k)
+{
+
+   nodeTF* cur = nodeExists(k);
+   if (cur != NULL)
+   {
+
+      attempt_no++;
+      cout << "points: " << cur->scor << "\n" << "Question: " << cur->ques << "(true/false)\n";
+      cin >> guess;
+
+      if (strcmp(guess, cur->c_ans) == 0)
+      {
+
+         cout << "Correct! you got 5 points\n";
+         enqueue(cur->scor, attempt_no);
+      }
+      else if (strcmp(guess, "skip") == 0)
+      {
+         enqueue(0, attempt_no);
+      }
+      else
+      {
+         cout << "Inorrect, the answer was " << cur->c_ans << " you lose 5 points\n";
+         cur->scor = -5;
+         enqueue(cur->scor, attempt_no);
+
+                                                                                                                          19
+         cout << endl;
+      }
+      cur = cur->next;
+   }
+   else
+   {
+      cout << "No question exist with this key value : " << k << endl;
+   }
+}
+
+void printTFlist()
+{
+
+   if (head == NULL)
+   {
+
+      cout << "No MCQs type question exist in record: ";
+   }
+   else
+   {
+
+      cout << k << " \n";
+      nodeTF* cur = head;
+      while (cur != NULL)
+      {
+
+         cout << "TF" << " " << cur->scor << "\n" << cur->ques << "(true/false)" << endl;
+         cout << cur->c_ans << endl;
+         cur = cur->next;
+      }
+
+                                                                                                                          20
+      }
+   }
+};
+class nodeSA
+{
+public:
+   int key;
+   string type;
+   char ques[500], c_ans[20], a[20];
+   int scor;
+   nodeSA* next;
+   node()
+   {
+
+      key = 0;
+      type = "SA: ";
+      scor = 0;
+      next = NULL;
+   }
+};
+class SA :public score_queue
+{
+public:
+   nodeSA* head;
+   nodeSA* tail;
+   int k, attempt_no;
+
+                                                                                                                             21
+char guess[20], c[20];
+SA()
+{
+
+   attempt_no = 0;
+   k = 0;
+   head = NULL;
+   tail = NULL;
+}
+nodeSA* nodeExists(int k)
+{
+   nodeSA* temp = NULL;
+
+   nodeSA* cur = head;
+   while (cur != NULL)
+   {
+
+      if (cur->key == k)
+      {
+
+         temp = cur;
+      }
+      cur = cur->next;
+
+   }
+   return temp;
+}
+void inserthead(char q[500], char c[20], int s)
+{
+
+                                                                                                                          22
+   k++;
+   nodeSA* n = new nodeSA;
+   n->key = k;
+   strcpy(n->ques, q);
+   strcpy(n->c_ans, c);
+   n->scor = s;
+   if (head == NULL && tail == NULL)
+   {
+
+      head = tail = n;
+   }
+   else
+   {
+
+      tail->next = n;
+      tail = n;
+   }
+   ofstream o;
+   o.open("questions.txt", ios::app);
+   o << "SA" << " " << n->scor << "\nQuestion: " << n->ques << "\n";
+   o << n->c_ans << endl;
+   o.close();
+}
+void attemptSA(int k)
+{
+   nodeSA* cur = nodeExists(k);
+   if (cur != NULL)
+   {
+
+                                                                                                                          23
+      attempt_no++;
+      cout << "points: " << cur->scor << "\n" << "Question: " << cur->ques << endl;
+      cin >> guess;
+      if (strcmp(guess, cur->c_ans) == 0)
+      {
+
+         cout << "Correct! you got 20 points\n";
+         enqueue(cur->scor, attempt_no);
+      }
+      else if (strcmp(guess, "skip") == 0)
+      {
+         enqueue(0, attempt_no);
+      }
+      else
+      {
+         cout << "Inorrect, the answer was " << cur->c_ans << " you lose 5 points\n";
+         cur->scor = -20;
+         enqueue(cur->scor, attempt_no);
+      }
+      cur = cur->next;
+   }
+   else
+   {
+      cout << "No question exist with this key value : " << k << endl;
+   }
+}
+
+                                                                                                                          24
+   void printTFlist()
+   {
+
+      if (head == NULL)
+      {
+
+         cout << "No SA type question exist in record: ";
+      }
+      else
+      {
+
+         nodeSA* cur = head;
+         while (cur != NULL)
+         {
+
+            cout << "SA" << " " << cur->scor << "\n" << cur->ques;
+            cout << endl << cur->c_ans << endl;
+            cur = cur->next;
+         }
+
+      }
+   }
+};
+
+class Question :public score_queue
+{
+public:
+
+   int s, correct, key, total, guess;
+   Question()
+
+                                                                                                                             25
+{
+   s = 0;
+   correct = 0;
+   key = 0;
+
+}
+void count()
+{
+
+   ifstream i;
+   i.open("questions.txt", ios::app);
+   if (!i.is_open())
+   {
+
+      cout << "file not open: ";
+   }
+   else
+   {
+
+      i >> key;
+      i.close();
+   }
+}
+
+void attemptq(MC mc, TF tf, SA sa, int a)
+{
+
+   ifstream i;
+   i.open("questions.txt", ios::app);
+   if (!i.is_open())
+   {
+
+                                                                                                                          26
+   cout << "file not open: ";
+}
+else
+{
+
+   string line;
+   string guess;
+   string p, t;
+   getline(i, line);
+   while (!i.eof())
+   {
+
+      getline(i, line);
+      stringstream ss(line);
+      string lc = line;
+      getline(ss, t, ' ');
+      getline(ss, p, ' ');
+      s++;
+      if (t == "TF")
+      {
+
+         getline(i, line);
+         //attempt_no++;
+         cout << "points: " << p << "\n" << "Question: " << line << "\n";
+         cin >> guess;
+         getline(i, line);
+         if (line == guess)
+         {
+
+                                                                                                                       27
+      cout << "Correct! you got 10 points\n";
+      enqueue(5, s);
+   }
+   else if (guess == "skip")
+   {
+      enqueue(0, s);
+   }
+   else
+   {
+      cout << "Inorrect, the answer was " << line << " you lose 5 points\n";
+      enqueue(-5, s);
+   }
+}
+else if (t == "MC")
+{
+   getline(i, line);
+   cout << "points: " << p << "\nQuestion: " << line << "\nA) ";
+   getline(i, line);
+   cout << line << "\nB) ";
+   getline(i, line);
+   cout << line << "\nC) ";
+   getline(i, line);
+   cout << line << "\nD) ";
+   getline(i, line);
+   cout << line << "\n";
+   cin >> guess;
+
+                                                                                                                 28
+   getline(i, line);
+   if (line == guess)
+   {
+
+      cout << "Correct! you got 10 points\n";
+      enqueue(10, s);
+   }
+   else if (guess == "skip")
+   {
+      enqueue(0, s);
+   }
+   else
+   {
+      cout << "Inorrect, the answer was " << line << " you lose 5 points\n";
+      enqueue(-10, s);
+   }
+}
+else if (t == "SA")
+{
+
+   getline(i, line);
+   cout << "points: " << p << "\nQuestion: " << line << "\n";
+   cin >> guess;
+   getline(i, line);
+   if (line == guess)
+   {
+
+                                                                                                                 29
+                  cout << "Correct! you got 20 points\n";
+                  enqueue(20, s);
+               }
+               else if (guess == "skip")
+               {
+                  enqueue(0, s);
+               }
+               else
+               {
+                  cout << "Inorrect, the answer was " << line << " you lose 5 points\n";
+                  enqueue(-20, s);
+               }
+
+            }
+         }
+      }
+
+      i.close();
+
+   }
+
+};
+int main()
+{
+
+   system("color 0a");
+
+                                                                                                                             30
+srand(time(0));
+
+string fname, lname;
+
+char f[50];
+
+int qnumber;
+
+ifstream i;
+
+score_queue s;
+
+Question q;
+
+SA sa;
+
+MC mc;
+
+TF tf;
+
+menu:
+
+system("cls");
+
+cout << endl << endl;
+
+cout << "\t\t######################################\n";
+
+cout << "\t\t#*                    *#\n";
+
+cout << "\t\t#* WELCOME TO QUIZ SYSTEM *#\n";
+
+cout << "\t\t#*                    *#\n";
+
+cout << "\t\t######################################\n\n\n";
+
+char a[200] = "admin", p[200] = "admin";
+
+char a1[200], p1[200];
+
+int option;
+
+do
+
+{
+
+   cout << "\n\t\t\tMenu\n\t\t\t****\n\t1.login to admin\n\t2.for users\n";
+
+   cout << "\t3.display quiz result\n\t4.exit\n ";
+
+   cout << "enter your choise: ";
+
+                                                                             31
+cin >> option;
+switch (option)
+{
+case 1:
+
+   cout << "enter username: ";
+   cin >> a1;
+   cout << "enter password: ";
+   cin >> p1;
+  if (strcmp(a, a1) == 0 && strcmp(p, p1) == 0)
+   {
+
+      char c[20], q[500], a1[500], a2[500], a3[500], a4[500];
+      int s;
+      do
+      {
+
+         system("cls");
+         cout << "\n\n\t\tADMIN\n\t1.Add MCQ in list:\n\t2.Add TF in list:\n";
+         cout << "\t3.Add SA in list:\n\t4.Display question bank:\n\t5.back\nenter your choise: ";
+         int o;
+         cin >> o;
+         switch (o)
+         {
+         case 1:
+
+            cin.ignore();
+            cout << "enter question: ";
+            cin.getline(q, sizeof(q));
+            cin.ignore();
+
+                                                                                                                       32
+   cout << "enter option 1: ";
+   cin.getline(a1, sizeof(a1));
+   cin.ignore();
+   cout << "enter option 2: ";
+   cin.getline(a2, sizeof(a2));
+   cin.ignore();
+   cout << "enter option 3: ";
+   cin.getline(a3, sizeof(a3));
+   cin.ignore();
+   cout << "enter option 4: ";
+   cin.getline(a4, sizeof(a4));
+   cin.ignore();
+   cout << "enter correct option: ";
+   cin.getline(c, 20);
+   cin.ignore();
+   s = 10;
+  mc.inserthead(q, a1, a2, a3, a4, c, s);
+   cout << "\n\n\t\tQuestion added successfully: \n\n";
+   // system("pause");
+   system("cls");
+   break;
+case 2:
+   cin.ignore();
+   cout << "enter question: ";
+   cin.getline(q, sizeof(q));
+   cin.ignore();
+
+                                                                                                              33
+   cout << "enter correct answer: ";
+   cin.getline(c, sizeof(c));
+   cin.ignore();
+   s = 5;
+   tf.inserthead(q, c, s);
+   cout << "question added successfully: ";
+   system("cls");
+   break;
+case 3:
+   cin.ignore();
+   cout << "enter question: ";
+   cin.getline(q, sizeof(q));
+   cin.ignore();
+   cout << "enter correct answer: ";
+   cin.getline(c, sizeof(c));
+   cin.ignore();
+   s = 20;
+   sa.inserthead(q, c, s);
+   break;
+case 4:
+
+   i.open("questions.txt", ios::app);
+   if (!i.is_open())
+   {
+
+      cout << "file not open: ";
+   }
+
+                                                                                                              34
+         else
+         {
+
+            string rr;
+            while (!i.eof())
+            {
+
+               getline(i, rr);
+               cout << rr << endl;
+            }
+         }
+         i.close();
+         system("pause");
+         break;
+      case 5:
+         goto menu;
+         break;
+      default:
+         cout << "invalid choise try again: ";
+      }
+
+   } while (option != 3);
+}
+else
+{
+
+  "wrong username or password try again: ";
+}
+break;
+
+                                                                                                                    35
+case 2:
+   system("cls");
+   cout << "Enter your first name: ";
+   cin >> fname;
+   cout << "Enter your last name: ";
+   cin >> lname;
+
+repeat:
+   cout << "What file store yours result: ";
+   cin >> f;
+   cout << "How many questions you want to attempt:";
+   cin >> qnumber;
+   q.count();
+  if ((qnumber > q.key) || (qnumber < 0))
+   {
+      cout << "\n\n\t\tToo many questions please try with less value.";
+      cout << "\n\t\t**********************************************\n\n\n";
+      goto repeat;
+   }
+   else
+   {
+      int a = (rand() % (qnumber - tf.k - sa.k)) + 1;
+      q.attemptq(mc, tf, sa, a);
+      system("pause");
+   }
+   goto menu;
+   break;
+
+                                                                                                                       36
+      case 3:
+
+         system("cls");
+
+         cout << "result from the queue is: \n";
+
+         cout << "total questions are: " << q.s << "\n";
+
+         q.display(f);
+
+         system("pause");
+
+         system("cls");
+
+         break;
+
+      case 4:
+
+         system("cls");
+
+         cout << "\n\n\n\t\t\tTHANK YOU\n\n\n";
+
+         return 0;
+
+      default:
+
+         cout << "invalid option try a valid choise: ";
+
+         break;
+
+      }
+
+   } while (option != 4);
+
+}
+
+#include<iostream>
+#include<ctime>
+#include<cstdlib>
+#include<string.h>
+#include<fstream>
+#include<sstream>
+using namespace std;
+class Node
+{
+public:
+
+      int key;
+      int score;
+      Node* next;
+
+                                                                                                                             37
+      Node()
+      {
+
+             key = 0;
+             score = 0;
+             next = NULL;
+      }
+};
+
+class score_queue
+{
+public:
+
+      Node* front;
+      Node* rear;
+      int total;
+
+      score_queue()
+      {
+
+             total = 0;
+             front = NULL;
+             rear = NULL;
+      }
+
+      bool isEmpty()
+      {
+
+             if ((front == NULL) && (rear == NULL))
+             {
+
+                   return true;
+             }
+             else
+             {
+
+                   return false;
+             }
+      }
+      void enqueue(int s, int k)
+      {
+             Node* n = new Node;
+             n->score = s;
+             n->key = k;
+             if (isEmpty())
+             {
+
+                   front = n;
+                   rear = n;
+             }
+
+             else
+
+                                                                                                                             38
+      {
+             rear->next = n;
+             rear = n;
+
+      }
+
+}
+
+Node* dequeue()
+{
+
+      Node* temp = NULL;
+      if (isEmpty())
+      {
+
+             cout << "no marks obtained yet" << endl;
+             return NULL;
+      }
+      else
+      {
+             if (front == rear)
+             {
+
+                   temp = front;
+                   front = NULL;
+                   rear = NULL;
+                   return temp;
+             }
+             else
+             {
+                   temp = front;
+                   front = front->next;
+                   return temp;
+             }
+
+      }
+}
+
+int count()
+{
+
+      int count = 0;
+      Node* temp = front;
+      while (temp != NULL)
+      {
+
+             count++;
+             temp = temp->next;
+      }
+      return count;
+}
+
+                                                                                                                       39
+      void display(char f[50])
+      {
+
+             if (isEmpty())
+             {
+
+                   cout << "no record found" << endl;
+             }
+             else
+             {
+
+                   Node* temp = front;
+                   while (temp != NULL)
+                   {
+
+                          cout << "Q:" << temp->key << " = " << temp->score << endl;
+                          total = total + temp->score;
+                          ofstream o;
+                          o.open(f, ios::app);
+                          o << "Q:" << temp->key << " = " << temp->score << endl;
+                          o.close();
+                          if (temp->next == NULL)
+                          {
+
+                                 cout << "total is: " << total;
+                                 temp->key = 0;
+                                 ofstream o;
+                                 o.open(f, ios::app);
+                                 o << "total is: " << total;
+                                 o.close();
+                          }
+                          temp = temp->next;
+                   }
+                   total = 0;
+                   front = NULL;
+                   rear = NULL;
+                   cout << endl;
+             }
+
+      }
+};
+
+class nodeMC
+{
+public:
+
+      int key;
+      char ques[500];
+      char a1[500];
+      char a2[500];
+
+                                                                                                                             40
+      char a3[500];
+      char a4[500];
+      char c_ans[20];
+      int scor;
+      nodeMC* next;
+      node()
+      {
+
+             key = 0;
+             scor = 0;
+             next = NULL;
+      }
+};
+class MC :public score_queue
+{
+public:
+      nodeMC* head;
+      nodeMC* tail;
+      int k, attempt_no;
+      char guess[20];
+      MC()
+      {
+             attempt_no = 0;
+             k = 0;
+             head = NULL;
+             tail = NULL;
+      }
+      nodeMC* nodeExists(int k)
+      {
+             nodeMC* temp = NULL;
+
+             nodeMC* cur = head;
+             while (cur != NULL)
+             {
+
+                   if (cur->key == k)
+                   {
+
+                          temp = cur;
+                   }
+                   cur = cur->next;
+             }
+             return temp;
+      }
+      void inserthead(char q[500], char a11[500], char a22[500], char a33[500], cha
+r a44[500], char c[20], int s)
+      {
+             k++;
+
+                                                                                                                             41
+             nodeMC* n = new nodeMC;
+             n->key = k;
+             strcpy(n->ques, q);
+             strcpy(n->a1, a11);
+             strcpy(n->a2, a22);
+             strcpy(n->a3, a33);
+             strcpy(n->a4, a44);
+             strcpy(n->c_ans, c);
+             n->scor = s;
+             if (head == NULL && tail == NULL)
+             {
+
+                   head = tail = n;
+             }
+             else
+             {
+
+                   tail->next = n;
+                   tail = n;
+             }
+             ofstream o;
+             o.open("questions.txt", ios::app);
+             o << "MC" << " " << n->scor << "\n" << n->ques;
+             o << "\n" << n->a1 << "\n" << n->a2 << "\n" << n->a3 << "\n" << n->a4;
+             o << endl << n->c_ans << endl;
+
+      }
+      void attemptMC(int k)
+      {
+
+             nodeMC* cur = nodeExists(k);
+             if (cur != NULL)
+             {
+
+                   attempt_no++;
+                   cout << "points: " << cur->scor << "\n" << "Question: " << cur-
+>ques << endl;
+                   cout << "\nA) " << cur->a1 << "\nB) " << cur->a2 << "\nC) ";
+                   cout << cur->a3 << "\nD) " << cur->a4 << endl;
+                   cin >> guess;
+                   if (strcmp(guess, cur->c_ans) == 0)
+                   {
+
+                          cout << "Cnorrect! you got 10 points\n";
+                          enqueue(cur->scor, attempt_no);
+                   }
+                   else if (strcmp(guess, "skip") == 0)
+                   {
+                          enqueue(0, attempt_no);
+                   }
+
+                                                                                                                             42
+                   else
+                   {
+
+                          cout << "Inorrect, the answer was " << cur-
+>c_ans << " you lose 10 points\n";
+
+                          cur->scor = -10;
+                          enqueue(cur->scor, attempt_no);
+                   }
+                   cout << "\n\n\n";
+                   cur = cur->next;
+             }
+             else
+             {
+                   cout << "No question exist with this key value : " << k << endl;
+             }
+      }
+
+      void printMClist()
+      {
+
+             if (head == NULL)
+             {
+
+                   cout << "No MCQs type question exist in record: ";
+             }
+             else
+             {
+
+                   nodeMC* cur = head;
+                   while (cur != NULL)
+                   {
+
+                          cout << "MC" << " " << cur->scor << "\n" << cur->ques;
+                          cout << "\n" << cur->a1 << "\n" << cur->a2 << "\n" << cur-
+>a3 << "\n" << cur->a4;
+                          cout << endl << cur->c_ans << endl;
+                          cur = cur->next;
+                   }
+
+             }
+      }
+};
+class nodeTF
+{
+public:
+      int key;
+      char ques[500], c_ans[20], a;
+      int scor;
+      nodeTF* next;
+      node()
+
+                                                                                                                             43
+      {
+             key = 0;
+             scor = 0;
+             next = NULL;
+
+      }
+};
+class TF :public score_queue
+{
+public:
+
+      nodeTF* head;
+      nodeTF* tail;
+      int k, attempt_no;
+      char guess[20], c[20];
+      TF()
+      {
+
+             attempt_no = 0;
+             k = 0;
+             head = NULL;
+             tail = NULL;
+      }
+      nodeTF* nodeExists(int k)
+      {
+             nodeTF* temp = NULL;
+             nodeTF* cur = head;
+             while (cur != NULL)
+             {
+
+                   if (cur->key == k)
+                   {
+
+                          temp = cur;
+                   }
+                   cur = cur->next;
+
+             }
+             return temp;
+      }
+      void inserthead(char q[500], char c[20], int s)
+      {
+             k++;
+             nodeTF* n = new nodeTF;
+             n->key = k;
+             strcpy(n->ques, q);
+             strcpy(n->c_ans, c);
+             n->scor = s;
+             if (head == NULL && tail == NULL)
+             {
+
+                                                                                                                             44
+                   head = tail = n;
+             }
+             else
+             {
+
+                   tail->next = n;
+                   tail = n;
+             }
+
+             ofstream o;
+             o.open("questions.txt", ios::app);
+             o << "TF" << " " << n->scor << "\nQuestion: " << n-
+>ques << "(true/false)\n";
+             o << n->c_ans << endl;
+             o.close();
+
+      }
+      void attemptTF(int k)
+      {
+
+             nodeTF* cur = nodeExists(k);
+             if (cur != NULL)
+             {
+
+                   attempt_no++;
+                   cout << "points: " << cur->scor << "\n" << "Question: " << cur-
+>ques << "(true/false)\n";
+                   cin >> guess;
+
+                   if (strcmp(guess, cur->c_ans) == 0)
+                   {
+
+                          cout << "Correct! you got 5 points\n";
+                          enqueue(cur->scor, attempt_no);
+                   }
+                   else if (strcmp(guess, "skip") == 0)
+                   {
+                          enqueue(0, attempt_no);
+                   }
+                   else
+                   {
+                          cout << "Inorrect, the answer was " << cur-
+>c_ans << " you lose 5 points\n";
+                          cur->scor = -5;
+                          enqueue(cur->scor, attempt_no);
+                          cout << endl;
+                   }
+                   cur = cur->next;
+             }
+
+                                                                                                                             45
+             else
+             {
+
+                   cout << "No question exist with this key value : " << k << endl;
+             }
+      }
+
+      void printTFlist()
+      {
+
+             if (head == NULL)
+             {
+
+                   cout << "No MCQs type question exist in record: ";
+             }
+             else
+             {
+
+                   cout << k << " \n";
+                   nodeTF* cur = head;
+                   while (cur != NULL)
+                   {
+
+                          cout << "TF" << " " << cur->scor << "\n" << cur-
+>ques << "(true/false)" << endl;
+
+                          cout << cur->c_ans << endl;
+                          cur = cur->next;
+                   }
+
+             }
+      }
+};
+class nodeSA
+{
+public:
+      int key;
+      string type;
+      char ques[500], c_ans[20], a[20];
+      int scor;
+      nodeSA* next;
+      node()
+      {
+
+             key = 0;
+             type = "SA: ";
+             scor = 0;
+             next = NULL;
+      }
+};
+class SA :public score_queue
+{
+
+                                                                                                                             46
+public:
+      nodeSA* head;
+      nodeSA* tail;
+      int k, attempt_no;
+      char guess[20], c[20];
+      SA()
+      {
+             attempt_no = 0;
+             k = 0;
+             head = NULL;
+             tail = NULL;
+      }
+      nodeSA* nodeExists(int k)
+      {
+             nodeSA* temp = NULL;
+
+             nodeSA* cur = head;
+             while (cur != NULL)
+             {
+
+                   if (cur->key == k)
+                   {
+
+                          temp = cur;
+                   }
+                   cur = cur->next;
+
+             }
+             return temp;
+      }
+      void inserthead(char q[500], char c[20], int s)
+      {
+             k++;
+             nodeSA* n = new nodeSA;
+             n->key = k;
+             strcpy(n->ques, q);
+             strcpy(n->c_ans, c);
+             n->scor = s;
+             if (head == NULL && tail == NULL)
+             {
+
+                   head = tail = n;
+             }
+             else
+             {
+
+                   tail->next = n;
+                   tail = n;
+             }
+
+                                                                                                                             47
+             ofstream o;
+             o.open("questions.txt", ios::app);
+             o << "SA" << " " << n->scor << "\nQuestion: " << n->ques << "\n";
+             o << n->c_ans << endl;
+             o.close();
+      }
+      void attemptSA(int k)
+      {
+             nodeSA* cur = nodeExists(k);
+             if (cur != NULL)
+             {
+
+                   attempt_no++;
+                   cout << "points: " << cur->scor << "\n" << "Question: " << cur-
+>ques << endl;
+                   cin >> guess;
+                   if (strcmp(guess, cur->c_ans) == 0)
+                   {
+
+                          cout << "Correct! you got 20 points\n";
+                          enqueue(cur->scor, attempt_no);
+                   }
+                   else if (strcmp(guess, "skip") == 0)
+                   {
+                          enqueue(0, attempt_no);
+                   }
+                   else
+                   {
+                          cout << "Inorrect, the answer was " << cur-
+>c_ans << " you lose 5 points\n";
+                          cur->scor = -20;
+                          enqueue(cur->scor, attempt_no);
+                   }
+                   cur = cur->next;
+             }
+             else
+             {
+                   cout << "No question exist with this key value : " << k << endl;
+             }
+      }
+
+      void printTFlist()
+      {
+
+             if (head == NULL)
+             {
+
+                   cout << "No SA type question exist in record: ";
+             }
+
+                                                                                                                             48
+             else
+             {
+
+                   nodeSA* cur = head;
+                   while (cur != NULL)
+                   {
+
+                          cout << "SA" << " " << cur->scor << "\n" << cur->ques;
+                          cout << endl << cur->c_ans << endl;
+                          cur = cur->next;
+                   }
+
+             }
+      }
+};
+
+class Question :public score_queue
+{
+public:
+
+      int s, correct, key, total, guess;
+      Question()
+      {
+
+             s = 0;
+             correct = 0;
+             key = 0;
+      }
+      void count()
+      {
+             ifstream i;
+             i.open("questions.txt", ios::app);
+             if (!i.is_open())
+             {
+
+                   cout << "file not open: ";
+             }
+             else
+             {
+
+                   i >> key;
+                   i.close();
+             }
+      }
+
+      void attemptq(MC mc, TF tf, SA sa, int a)
+      {
+
+             ifstream i;
+             i.open("questions.txt", ios::app);
+             if (!i.is_open())
+
+                                                                                                                             49
+{
+      cout << "file not open: ";
+
+}
+else
+{
+
+      string line;
+      string guess;
+      string p, t;
+      getline(i, line);
+      while (!i.eof())
+      {
+
+n";            getline(i, line);
+ 5 points\n";  stringstream ss(line);
+               string lc = line;
+               getline(ss, t, ' ');
+               getline(ss, p, ' ');
+               s++;
+               if (t == "TF")
+               {
+
+                     getline(i, line);
+                     //attempt_no++;
+                     cout << "points: " << p << "\n" << "Question: " << line << "\
+
+                     cin >> guess;
+                     getline(i, line);
+                     if (line == guess)
+                     {
+
+                            cout << "Correct! you got 10 points\n";
+                            enqueue(5, s);
+                     }
+                     else if (guess == "skip")
+                     {
+                            enqueue(0, s);
+                     }
+                     else
+                     {
+                            cout << "Inorrect, the answer was " << line << " you lose
+
+                            enqueue(-5, s);
+                     }
+               }
+               else if (t == "MC")
+               {
+                     getline(i, line);
+
+                                  50
+5 points\n";        cout << "points: " << p << "\nQuestion: " << line << "\nA) ";
+                    getline(i, line);
+                    cout << line << "\nB) ";
+                    getline(i, line);
+                    cout << line << "\nC) ";
+                    getline(i, line);
+                    cout << line << "\nD) ";
+                    getline(i, line);
+                    cout << line << "\n";
+                    cin >> guess;
+                    getline(i, line);
+                    if (line == guess)
+                    {
+
+                           cout << "Correct! you got 10 points\n";
+                           enqueue(10, s);
+                    }
+                    else if (guess == "skip")
+                    {
+                           enqueue(0, s);
+                    }
+                    else
+                    {
+                           cout << "Inorrect, the answer was " << line << " you lose
+
+                           enqueue(-10, s);
+                    }
+              }
+              else if (t == "SA")
+              {
+
+              getline(i, line);
+              cout << "points: " << p << "\nQuestion: " << line << "\n";
+              cin >> guess;
+              getline(i, line);
+              if (line == guess)
+              {
+
+                    cout << "Correct! you got 20 points\n";
+                    enqueue(20, s);
+              }
+              else if (guess == "skip")
+              {
+                    enqueue(0, s);
+              }
+              else
+
+                                                                                                           51
+5 points\n";            {
+                              cout << "Inorrect, the answer was " << line << " you lose
+
+                              enqueue(-20, s);
+                        }
+
+                     }
+              }
+        }
+
+        i.close();
+
+    }
+
+};
+
+int main()
+
+{
+
+    system("color 0a");
+
+    srand(time(0));
+
+    string fname, lname;
+
+    char f[50];
+
+    int qnumber;
+
+    ifstream i;
+
+    score_queue s;
+
+    Question q;
+
+    SA sa;
+
+    MC mc;
+
+    TF tf;
+
+menu:
+
+    system("cls");
+
+    cout << endl << endl;
+
+    cout << "\t\t######################################\n";
+
+    cout << "\t\t#*                                *#\n";
+
+    cout << "\t\t#*        WELCOME TO QUIZ SYSTEM  *#\n";
+
+    cout << "\t\t#*                                *#\n";
+
+    cout << "\t\t######################################\n\n\n";
+
+    char a[200] = "admin", p[200] = "admin";
+
+    char a1[200], p1[200];
+
+    int option;
+
+    do
+
+    {
+
+        cout << "\n\t\t\tMenu\n\t\t\t****\n\t1.login to admin\n\t2.for users\n";
+
+        cout << "\t3.display quiz result\n\t4.exit\n ";
+
+        cout << "enter your choise: ";
+
+                                                                 52
+             cin >> option;
+             switch (option)
+             {
+             case 1:
+
+                   cout << "enter username: ";
+                   cin >> a1;
+                   cout << "enter password: ";
+                   cin >> p1;
+                   if (strcmp(a, a1) == 0 && strcmp(p, p1) == 0)
+                   {
+
+                          char c[20], q[500], a1[500], a2[500], a3[500], a4[500];
+                          int s;
+                          do
+                          {
+
+                                 system("cls");
+                                 cout << "\n\n\t\tADMIN\n\t1.Add MCQ in list:\n\t2.Add TF in l
+ist:\n";
+                                 cout << "\t3.Add SA in list:\n\t4.Display question bank:\n\t5
+.back\nenter your choise: ";
+                                 int o;
+                                 cin >> o;
+                                 switch (o)
+                                 {
+                                 case 1:
+
+                                       cin.ignore();
+                                       cout << "enter question: ";
+                                       cin.getline(q, sizeof(q));
+                                       cin.ignore();
+                                       cout << "enter option 1: ";
+                                       cin.getline(a1, sizeof(a1));
+                                       cin.ignore();
+                                       cout << "enter option 2: ";
+                                       cin.getline(a2, sizeof(a2));
+                                       cin.ignore();
+                                       cout << "enter option 3: ";
+                                       cin.getline(a3, sizeof(a3));
+                                       cin.ignore();
+                                       cout << "enter option 4: ";
+                                       cin.getline(a4, sizeof(a4));
+                                       cin.ignore();
+                                       cout << "enter correct option: ";
+                                       cin.getline(c, 20);
+                                       cin.ignore();
+                                       s = 10;
+                                       mc.inserthead(q, a1, a2, a3, a4, c, s);
+
+                                                                                                                             53
+      cout << "\n\n\t\tQuestion added successfully: \n\n";
+      // system("pause");
+      system("cls");
+      break;
+case 2:
+      cin.ignore();
+      cout << "enter question: ";
+      cin.getline(q, sizeof(q));
+      cin.ignore();
+      cout << "enter correct answer: ";
+      cin.getline(c, sizeof(c));
+      cin.ignore();
+      s = 5;
+      tf.inserthead(q, c, s);
+      cout << "question added successfully: ";
+      system("cls");
+      break;
+case 3:
+      cin.ignore();
+      cout << "enter question: ";
+      cin.getline(q, sizeof(q));
+      cin.ignore();
+      cout << "enter correct answer: ";
+      cin.getline(c, sizeof(c));
+      cin.ignore();
+      s = 20;
+      sa.inserthead(q, c, s);
+      break;
+case 4:
+
+      i.open("questions.txt", ios::app);
+      if (!i.is_open())
+      {
+
+             cout << "file not open: ";
+      }
+      else
+      {
+
+             string rr;
+             while (!i.eof())
+             {
+
+                   getline(i, rr);
+                   cout << rr << endl;
+             }
+      }
+      i.close();
+
+                                                                                             54
+\n";                            system("pause");
+                                break;
+                         case 5:
+                                goto menu;
+                                break;
+                         default:
+                                cout << "invalid choise try again: ";
+                         }
+
+                   } while (option != 3);
+            }
+            else
+            {
+
+                   "wrong username or password try again: ";
+            }
+            break;
+      case 2:
+            system("cls");
+            cout << "Enter your first name: ";
+            cin >> fname;
+            cout << "Enter your last name: ";
+            cin >> lname;
+      repeat:
+            cout << "What file store yours result: ";
+            cin >> f;
+            cout << "How many questions you want to attempt:";
+            cin >> qnumber;
+            q.count();
+            if ((qnumber > q.key) || (qnumber < 0))
+            {
+
+                   cout << "\n\n\t\tToo many questions please try with less value.";
+                   cout << "\n\t\t**********************************************\n\n
+
+                   goto repeat;
+            }
+            else
+            {
+
+                   int a = (rand() % (qnumber - tf.k - sa.k)) + 1;
+                   q.attemptq(mc, tf, sa, a);
+                   system("pause");
+            }
+            goto menu;
+            break;
+      case 3:
+            system("cls");
+
+                                                                                                                      55
+                   cout << "result from the queue is: \n";
+                   cout << "total questions are: " << q.s << "\n";
+                   q.display(f);
+                   system("pause");
+                   system("cls");
+                   break;
+             case 4:
+                   system("cls");
+                   cout << "\n\n\n\t\t\tTHANK YOU\n\n\n";
+                   return 0;
+             default:
+                   cout << "invalid option try a valid choise: ";
+                   break;
+             }
+      } while (option != 4);
+}
+
+                                                                                                                             56
+
